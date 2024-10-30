@@ -2,10 +2,18 @@
 
 import { useState, useRef } from "react"
 import "jspdf-autotable"
-import { Youtube, BookOpen, BarChart2, History, Moon, Sun } from "lucide-react"
+import { Youtube, BookOpen, BarChart2, History, Menu } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 
 // Assume these components and functions exist in your project
 import SimulationSelector from "@/components/simulation-selector"
@@ -77,46 +85,61 @@ export default function Component() {
     }
   }
 
+  const NavItems = () => (
+    <>
+      <Button
+        variant="ghost"
+        onClick={() => scrollToSection("selector")}
+        className={activeSection === "selector" ? "bg-accent" : ""}
+      >
+        <BookOpen className="mr-2 h-4 w-4" />
+        <span className="hidden md:inline">Simulate</span>
+      </Button>
+      <Button
+        variant="ghost"
+        onClick={() => scrollToSection("visualizer")}
+        className={activeSection === "visualizer" ? "bg-accent" : ""}
+      >
+        <BarChart2 className="mr-2 h-4 w-4" />
+        <span className="hidden md:inline">Results</span>
+      </Button>
+      <Button
+        variant="ghost"
+        onClick={() => scrollToSection("history")}
+        className={activeSection === "history" ? "bg-accent" : ""}
+      >
+        <History className="mr-2 h-4 w-4" />
+        <span className="hidden md:inline">History</span>
+      </Button>
+    </>
+  )
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="bg-card shadow-md py-4 sticky top-0 z-10">
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Game Theory Simulator</h1>
-          <nav className="flex items-center space-x-4">
-            <ul className="flex space-x-4">
-              <li>
-                <Button
-                  variant="ghost"
-                  onClick={() => scrollToSection("selector")}
-                  className={activeSection === "selector" ? "bg-accent" : ""}
-                >
-                  <BookOpen className="mr-2 h-4 w-4" />
-                  Simulate
+          <h1 className="text-xl md:text-3xl font-bold">Game Theory Simulator</h1>
+          <nav className="flex items-center space-x-2 md:space-x-4">
+            <div className="hidden md:flex space-x-2">
+              <NavItems />
+            </div>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="icon" className="md:hidden">
+                  <Menu className="h-4 w-4" />
                 </Button>
-              </li>
-              <li>
-                <Button
-                  variant="ghost"
-                  onClick={() => scrollToSection("visualizer")}
-                  className={activeSection === "visualizer" ? "bg-accent" : ""}
-                >
-                  <BarChart2 className="mr-2 h-4 w-4" />
-                  Results
-                </Button>
-              </li>
-              <li>
-                <Button
-                  variant="ghost"
-                  onClick={() => scrollToSection("history")}
-                  className={activeSection === "history" ? "bg-accent" : ""}
-                >
-                  <History className="mr-2 h-4 w-4" />
-                  History
-                </Button>
-              </li>
-            </ul>
-            <ModeToggle/>
+              </SheetTrigger>
+              <SheetContent>
+                <SheetHeader>
+                  <SheetTitle>Navigation</SheetTitle>
+                  <SheetDescription>Choose a section to navigate to</SheetDescription>
+                </SheetHeader>
+                <div className="mt-4 space-y-2">
+                  <NavItems />
+                </div>
+              </SheetContent>
+            </Sheet>
+            <ModeToggle />
           </nav>
         </div>
       </header>
@@ -145,7 +168,6 @@ export default function Component() {
                 transition={{ duration: 0.3 }}
               >
                 <SimulationVisualizer result={currentSimulation} />
-                
               </motion.div>
             )}
             {allSimulations && (
@@ -161,7 +183,6 @@ export default function Component() {
                   player1={allSimulations.player1} 
                   algorithmNames={allSimulations.algorithmNames}
                 />
-          
               </motion.div>
             )}
           </AnimatePresence>
@@ -171,22 +192,23 @@ export default function Component() {
           <SimulationHistory onLoadSimulation={handleLoadSimulation} />
         </section>
       </main>
+
       <footer className="bg-card shadow-md py-4 mt-8">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 space-y-4">
           <Card className="bg-gradient-to-r from-gray-400 via-gray-500 to-gray-600 text-white">
             <CardHeader>
-              <CardTitle className="text-2xl">Inspired by Game Theory</CardTitle>
+              <CardTitle className="text-xl md:text-2xl">Inspired by Game Theory</CardTitle>
               <CardDescription className="text-gray-100">
                 This project was inspired by an enlightening YouTube video on Game Theory
               </CardDescription>
             </CardHeader>
-            <CardContent className="flex items-center justify-between">
-              <p className="text-lg">
+            <CardContent className="flex flex-col md:flex-row items-center justify-between gap-4">
+              <p className="text-base md:text-lg text-center md:text-left">
                 Watch the video that sparked this simulation
               </p>
               <Button 
                 variant="secondary" 
-                className="bg-white text-black hover:bg-gray-200 transition-colors"
+                className="bg-white text-black hover:bg-gray-200 transition-colors w-full md:w-auto"
                 onClick={() => window.open("https://www.youtube.com/watch?v=mScpHTIi-kM", "_blank")}
               >
                 <Youtube className="mr-2 h-4 w-4" />
@@ -194,9 +216,9 @@ export default function Component() {
               </Button>
             </CardContent>
           </Card>
-          <Card className="mt-4 bg-card">
+          <Card className="bg-card">
             <CardHeader>
-              <CardTitle className="text-xl">About the Developer</CardTitle>
+              <CardTitle className="text-lg md:text-xl">About the Developer</CardTitle>
             </CardHeader>
             <CardContent className="flex justify-center space-x-4">
               <Button variant="outline" size="icon" onClick={() => window.open("https://twitter.com/VIPULSHARM91651", "_blank")} aria-label="Developer's X (Twitter) profile">
@@ -212,7 +234,6 @@ export default function Component() {
           </Card>
         </div>
       </footer>
-      {/* Hidden canvas for chart rendering */}
     </div>
   )
 }
