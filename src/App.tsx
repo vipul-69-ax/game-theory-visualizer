@@ -187,7 +187,7 @@ export default function Component() {
               <Button 
                 variant="secondary" 
                 className="bg-white text-black hover:bg-gray-200 transition-colors"
-                onClick={() => window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank")}
+                onClick={() => window.open("https://www.youtube.com/watch?v=mScpHTIi-kM", "_blank")}
               >
                 <Youtube className="mr-2 h-4 w-4" />
                 Watch Video
