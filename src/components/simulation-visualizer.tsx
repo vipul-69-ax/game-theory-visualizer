@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Line, LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { SimulationResult } from '@/lib/simulation-runner';
+import { ScrollArea } from './ui/scroll-area';
 
 interface SimulationVisualizerProps {
   result: SimulationResult | null;
@@ -24,7 +25,6 @@ export default function SimulationVisualizerComponent({ result }: SimulationVisu
         <CardDescription>Visualizing the performance of two algorithms</CardDescription>
       </CardHeader>
       <CardContent>
-         <div className="h-[300px] sm:h-[400px] mb-4">
           <ChartContainer
             config={{
               player1: {
@@ -49,28 +49,27 @@ export default function SimulationVisualizerComponent({ result }: SimulationVisu
               </LineChart>
             </ResponsiveContainer>
           </ChartContainer>
-        </div>
         
         <div className="mt-4 grid grid-cols-2 gap-4">
           <div>
             <h3 className="text-lg font-semibold mb-2">Player 1 Choices</h3>
-            <div className="h-40 overflow-y-auto border rounded p-2">
+            <ScrollArea className="h-40 overflow-y-auto border rounded p-2">
               {result.player1Choices.map((choice, index) => (
-                <span key={index} className={`inline-block m-1 p-1 rounded ${choice === 'cooperate' ? 'bg-green-200' : 'bg-red-200'}`}>
+                <span key={index} className={`inline-block text-black font-bold m-1 p-1 rounded ${choice === 'cooperate' ? 'bg-green-200' : 'bg-red-200'}`}>
                   {choice === 'cooperate' ? 'C' : 'S'}
                 </span>
               ))}
-            </div>
+            </ScrollArea>
           </div>
           <div>
             <h3 className="text-lg font-semibold mb-2">Player 2 Choices</h3>
-            <div className="h-40 overflow-y-auto border rounded p-2">
+            <ScrollArea className="h-40 overflow-y-auto border rounded p-2">
               {result.player2Choices.map((choice, index) => (
-                <span key={index} className={`inline-block m-1 p-1 rounded ${choice === 'cooperate' ? 'bg-green-200' : 'bg-red-200'}`}>
+                <span key={index} className={`inline-block text-black font-bold m-1 p-1 rounded ${choice === 'cooperate' ? 'bg-green-200' : 'bg-red-200'}`}>
                   {choice === 'cooperate' ? 'C' : 'S'}
                 </span>
               ))}
-            </div>
+            </ScrollArea>
           </div>
         </div>
         

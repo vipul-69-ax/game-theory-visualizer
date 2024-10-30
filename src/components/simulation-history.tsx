@@ -6,7 +6,7 @@ interface SimulationHistoryProps {
   onLoadSimulation: (result: any) => void;
 }
 
-export default function SimulationHistoryComponent({ onLoadSimulation }: SimulationHistoryProps) {
+export default function SimulationHistory({ onLoadSimulation }: SimulationHistoryProps) {
   const [savedSimulations, setSavedSimulations] = React.useState<any[]>([]);
 
   React.useEffect(() => {
