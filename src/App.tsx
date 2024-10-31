@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import { useState, useRef } from "react";
-import "jspdf-autotable";
+import { useState, useRef } from "react"
+import "jspdf-autotable"
 import {
   Youtube,
   BookOpen,
@@ -10,16 +10,16 @@ import {
   Menu,
   Cpu,
   Box,
-} from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+} from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import {
   Sheet,
   SheetContent,
@@ -27,37 +27,36 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
+} from "@/components/ui/sheet"
 
-import SimulationSelector from "@/components/simulation-selector";
-import SimulationVisualizer from "@/components/simulation-visualizer";
-import SimulationHistory from "@/components/simulation-history";
-import AllAlgorithmsComparison from "@/components/all-algorithms-comparison";
-import AIOpponent from "@/components/ai/Opponent";
-import ThreeDVisualizations from "@/components/3d/Visualization";
-import { runSimulation, SimulationResult } from "@/lib/simulation-runner";
-import { algorithms } from "@/lib/algorithms";
-import { ModeToggle } from "./components/mode-toggle";
-import Joyride, { Step } from "react-joyride";
-import { useTheme } from "./components/ui/theme-provider";
-import MultiplayerGame from "./components/multiplayer";
+import SimulationSelector from "@/components/simulation-selector"
+import SimulationVisualizer from "@/components/simulation-visualizer"
+import SimulationHistory from "@/components/simulation-history"
+import AllAlgorithmsComparison from "@/components/all-algorithms-comparison"
+import AIOpponent from "@/components/ai/Opponent"
+import { runSimulation, SimulationResult } from "@/lib/simulation-runner"
+import { algorithms } from "@/lib/algorithms"
+import { ModeToggle } from "./components/mode-toggle"
+import Joyride, { Step } from "react-joyride"
+import { useTheme } from "./components/ui/theme-provider"
+import MultiplayerGame from "./components/multiplayer"
 
 export default function Component() {
   const [currentSimulation, setCurrentSimulation] =
-    useState<SimulationResult | null>(null);
+    useState<SimulationResult | null>(null)
   const [allSimulations, setAllSimulations] = useState<{
-    player1: string;
-    results: SimulationResult[];
-    algorithmNames: string[];
-  } | null>(null);
-  const [activeSection, setActiveSection] = useState<string>("selector");
-  const [runTutorial, setRunTutorial] = useState(false);
-  const [tutorialSeen, setTutorialSeen] = useState(false);
-  const { theme } = useTheme();
+    player1: string
+    results: SimulationResult[]
+    algorithmNames: string[]
+  } | null>(null)
+  const [activeSection, setActiveSection] = useState<string>("selector")
+  const [runTutorial, setRunTutorial] = useState(false)
+  const [tutorialSeen, setTutorialSeen] = useState(false)
+  const { theme } = useTheme()
   const [aiGameResults, setAIGameResults] = useState<{
-    playerScores: number[];
-    aiScores: number[];
-  }>({ playerScores: [], aiScores: [] });
+    playerScores: number[]
+    aiScores: number[]
+  }>({ playerScores: [], aiScores: [] })
 
   const steps: Step[] = [
     {
@@ -80,7 +79,7 @@ export default function Component() {
       target: "#history",
       content: "View and load your previous simulations from this section.",
     },
-  ];
+  ]
 
   const handleRunSimulation = (
     player1: string,
@@ -91,56 +90,56 @@ export default function Component() {
       algorithms[player1],
       algorithms[player2],
       iterations
-    );
-    setCurrentSimulation(result);
-    setAllSimulations(null);
-    setActiveSection("visualizer");
+    )
+    setCurrentSimulation(result)
+    setAllSimulations(null)
+    setActiveSection("visualizer")
 
     // Save to local storage
     const savedSimulations = JSON.parse(
       localStorage.getItem("simulations") || "[]"
-    );
-    savedSimulations.push({ player1, player2, iterations, result });
+    )
+    savedSimulations.push({ player1, player2, iterations, result })
     localStorage.setItem(
       "simulations",
       JSON.stringify(savedSimulations.slice(-5))
-    ); // Keep last 5 simulations
-  };
+    ) // Keep last 5 simulations
+  }
 
   const handleRunAgainstAll = (player1: string, iterations: number) => {
-    const results: SimulationResult[] = [];
-    const algorithmNames: string[] = [];
+    const results: SimulationResult[] = []
+    const algorithmNames: string[] = []
     Object.keys(algorithms).forEach((player2) => {
       if (player1 !== player2) {
         const result = runSimulation(
           algorithms[player1],
           algorithms[player2],
           iterations
-        );
-        results.push(result);
-        algorithmNames.push(player2);
+        )
+        results.push(result)
+        algorithmNames.push(player2)
       }
-    });
-    setAllSimulations({ player1, results, algorithmNames });
-    setCurrentSimulation(null);
-    setActiveSection("visualizer");
+    })
+    setAllSimulations({ player1, results, algorithmNames })
+    setCurrentSimulation(null)
+    setActiveSection("visualizer")
 
     // Save to local storage
     const savedSimulations = JSON.parse(
       localStorage.getItem("simulations") || "[]"
-    );
+    )
     savedSimulations.push({
       player1,
       player2: "All",
       iterations,
       results,
       algorithmNames,
-    });
+    })
     localStorage.setItem(
       "simulations",
       JSON.stringify(savedSimulations.slice(-5))
-    ); // Keep last 5 simulations
-  };
+    ) // Keep last 5 simulations
+  }
 
   const handleLoadSimulation = (simulation: any) => {
     if (Array.isArray(simulation.result)) {
@@ -150,29 +149,29 @@ export default function Component() {
         algorithmNames:
           simulation.algorithmNames ||
           simulation.result.map((_: any, i: number) => `Algorithm ${i + 1}`),
-      });
-      setCurrentSimulation(null);
+      })
+      setCurrentSimulation(null)
     } else {
-      setCurrentSimulation(simulation.result);
-      setAllSimulations(null);
+      setCurrentSimulation(simulation.result)
+      setAllSimulations(null)
     }
-    setActiveSection("visualizer");
-  };
+    setActiveSection("visualizer")
+  }
 
   const scrollToSection = (section: string) => {
-    setActiveSection(section);
-    const element = document.getElementById(section);
+    setActiveSection(section)
+    const element = document.getElementById(section)
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+      element.scrollIntoView({ behavior: "smooth" })
     }
-  };
+  }
 
   const handleAIGameComplete = (playerScore: number, aiScore: number) => {
     setAIGameResults((prev) => ({
       playerScores: [...prev.playerScores, playerScore],
       aiScores: [...prev.aiScores, aiScore],
-    }));
-  };
+    }))
+  }
 
   const NavItems = () => (
     <>
@@ -210,7 +209,7 @@ export default function Component() {
         <span className="hidden md:inline">History</span>
       </Button>
     </>
-  );
+  )
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -259,8 +258,8 @@ export default function Component() {
           {!tutorialSeen && (
             <Button
               onClick={() => {
-                setRunTutorial(true);
-                setTutorialSeen(true);
+                setRunTutorial(true)
+                setTutorialSeen(true)
               }}
             >
               Tutorial
@@ -419,6 +418,7 @@ export default function Component() {
                   <circle cx="4" cy="4" r="2" />
                 </svg>
               </Button>
+              
               <Button
                 variant="outline"
                 size="icon"
@@ -448,5 +448,5 @@ export default function Component() {
         </div>
       </footer>
     </div>
-  );
+  )
 }
