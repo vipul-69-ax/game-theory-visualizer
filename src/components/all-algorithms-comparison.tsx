@@ -4,6 +4,7 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/
 import { Line, LineChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { SimulationResult } from '@/lib/simulation-runner';
+import { useTheme } from './ui/theme-provider';
 
 interface AllAlgorithmsComparisonProps {
     results: SimulationResult[];
@@ -26,7 +27,7 @@ interface AllAlgorithmsComparisonProps {
     const midPoint = Math.ceil(sortedScores.length / 2);
     const firstHalf = sortedScores.slice(0, midPoint);
     const secondHalf = sortedScores.slice(midPoint);
-  
+    const {theme} = useTheme()
     return (
       <Card className="w-full mt-4">
         <CardHeader>
@@ -56,7 +57,7 @@ interface AllAlgorithmsComparisonProps {
                         <XAxis type="number" />
                         <YAxis dataKey="algorithm" type="category" width={100} />
                         <ChartTooltip content={<ChartTooltipContent />} />
-                        <Bar dataKey="score" fill="var(--color-chart-1)" />
+                        <Bar dataKey="score" fill={`${theme==="light"?"black":"white"}`} />
                       </BarChart>
                     </ResponsiveContainer>
                   </ChartContainer>
@@ -85,7 +86,7 @@ interface AllAlgorithmsComparisonProps {
                         <XAxis type="number" />
                         <YAxis dataKey="algorithm" type="category" width={100} />
                         <ChartTooltip content={<ChartTooltipContent />} />
-                        <Bar dataKey="score" fill="var(--color-chart-2)" />
+                        <Bar dataKey="score" fill={`${theme==="light"?"black":"white"}`} />
                       </BarChart>
                     </ResponsiveContainer>
                   </ChartContainer>
