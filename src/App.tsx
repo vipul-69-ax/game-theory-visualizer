@@ -255,16 +255,6 @@ export default function Component() {
             </Sheet>
             <ModeToggle />
           </nav>
-          {!tutorialSeen && (
-            <Button
-              onClick={() => {
-                setRunTutorial(true)
-                setTutorialSeen(true)
-              }}
-            >
-              Tutorial
-            </Button>
-          )}
         </div>
       </header>
 
@@ -316,7 +306,9 @@ export default function Component() {
             )}
           </AnimatePresence>
         </section>
-
+        <section id="history">
+          <SimulationHistory onLoadSimulation={handleLoadSimulation} />
+        </section>
         <section id="ai-opponent">
           <AIOpponent onGameComplete={handleAIGameComplete} />
         </section>
@@ -324,9 +316,7 @@ export default function Component() {
           <MultiplayerGame />
         </section>
 
-        <section id="history">
-          <SimulationHistory onLoadSimulation={handleLoadSimulation} />
-        </section>
+       
       </main>
 
       <footer className="bg-card shadow-md py-4 mt-8">
